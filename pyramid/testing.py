@@ -380,7 +380,7 @@ class DummyRequest(DeprecatedRequestMethodsMixin, URLMethodsMixin,
 
 have_zca = True
 
-def setUp(registry=None, request=None, hook_zca=True, autocommit=True,
+def setUp(registry=_marker, request=None, hook_zca=True, autocommit=True,
           settings=None):
     """
     Set :app:`Pyramid` registry and request thread locals for the
@@ -401,10 +401,10 @@ def setUp(registry=None, request=None, hook_zca=True, autocommit=True,
     :term:`application registry`, which may cause unit tests to not be
     isolated with respect to registrations they perform.
 
-    If the ``registry`` argument is ``None``, a new empty
+    If the ``registry`` argument is not supplied, a new empty
     :term:`application registry` will be created (an instance of the
     :class:`pyramid.registry.Registry` class).  If the ``registry``
-    argument is not ``None``, the value passed in should be an
+    argument is given, the value passed in should be an
     instance of the :class:`pyramid.registry.Registry` class or a
     suitable testing analogue.
 
@@ -438,7 +438,7 @@ def setUp(registry=None, request=None, hook_zca=True, autocommit=True,
     execution of the test.
     """
     manager.clear()
-    if registry is None:
+    if registry is _marker:
         registry = Registry('testing')
     config = Configurator(registry=registry, autocommit=autocommit)
     if settings is None:
